@@ -1,0 +1,14 @@
+{
+  "name": "quote-capture-tool",
+  "version": "1.0.0",
+  "description": "Tool for capturing insurance quote data with FCA API integration",
+  "main": "index.js",
+  "scripts": {
+    "start-api": "node fca-api-proxy/server.js",
+    "start-frontend": "npx serve quote-capture-tool",
+    "start": "concurrently \"npm run start-api\" \"npm run start-frontend\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

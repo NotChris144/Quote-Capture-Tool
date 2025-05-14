@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Capture – Competitor Insight</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Quote Capture – Competitor Insight</h1>
+        </header>
+
+        <main>
+            <section id="competitor-info-card" class="card">
+                <h2>Competitor Info</h2>
+                <div class="form-group">
+                    <label for="competitor-name">Competitor Name</label>
+                    <input type="text" id="competitor-name" name="competitor-name" placeholder="Enter competitor name">
+                    <div id="api-debug" style="margin-top: 5px; font-size: 12px;"></div>
+                </div>
+                <!-- Policy Type Dropdown Removed -->
+            </section>
+
+            <section id="payment-breakdown-card" class="card">
+                <h2>Payment Breakdown</h2>
+                <div class="form-group" id="annual-cash-price-group">
+                    <label for="annual-cash-price">Total Annual Cash Price (£)</label>
+                    <input type="number" id="annual-cash-price" name="annual-cash-price" placeholder="0.00" min="0" step="0.01">
+                </div>
+                
+                <hr class="payment-divider">
+
+                <div id="dd-fields-group">
+                    <p class="payment-group-title"><em>If paying by Direct Debit:</em></p>
+                    <div class="form-group">
+                        <label for="down-payment">Down Payment (£)</label>
+                        <input type="number" id="down-payment" name="down-payment" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="instalment-amount">Monthly Instalment Amount (£)</label>
+                        <input type="number" id="instalment-amount" name="instalment-amount" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="number-of-instalments">Number of Instalments</label>
+                        <input type="number" id="number-of-instalments" name="number-of-instalments" placeholder="e.g., 10 or 11" min="1" step="1">
+                    </div>
+                    <div class="form-group total-payment-display">
+                        <label>Calculated Direct Debit Annual Total:</label>
+                        <span id="dd-annual-total-value">£0.00</span>
+                    </div>
+                </div>
+                
+                <hr class="payment-divider">
+
+                <div class="form-group">
+                    <label for="total-excess">Total Policy Excess (£)</label>
+                    <input type="number" id="total-excess" name="total-excess" placeholder="0.00" min="0" step="0.01">
+                </div>
+                
+                <hr class="section-divider">
+                
+                <div class="form-group total-payment-display final-total">
+                    <label>Overall Quoted Price (with Add-ons):</label>
+                    <span id="final-total-payment-value">£0.00</span>
+                </div>
+            </section>
+
+            <section id="optional-info-card" class="card">
+                <h2>Optional Info & Add-ons</h2>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="telematics-policy-toggle">
+                        Telematics or Essentials Policy?
+                    </label>
+                    <div id="telematics-details-container" class="conditional-input-container price-input-container collapsed">
+                        <label for="telematics-details">Details/Cost (£):</label>
+                        <input type="text" id="telematics-details" name="telematics-details" placeholder="e.g., Black Box / 50.00">
+                    </div>
+                </div>
+
+                <hr class="section-divider">
+                <h3>Additional Products</h3>
+                <div class="form-group addon-input-area">
+                    <label for="addon-search-input">Type to add product (e.g., Key Cover)</label>
+                    <input type="text" id="addon-search-input" placeholder="Start typing product name...">
+                    <div id="addon-suggestions-list" class="suggestions-list"></div>
+                </div>
+                <div id="selected-addons-container" class="selected-addons-bubbles">
+                    <!-- Selected addons will appear here as bubbles -->
+                </div>
+            </section>
+
+            <!-- Actions Card Removed -->
+            <div style="display:none">
+                 <button id="prefill-button" class="action-btn">Pre-fill Last</button>
+                 <button id="save-button" class="action-btn primary-btn">
+                     <span class="btn-text">Save</span>
+                     <span class="btn-icon" style="display:none;">✓</span>
+                 </button>
+                 <button id="clear-button" class="action-btn danger-btn">Clear All</button>
+                 <button id="copy-summary-button" class="action-btn">Copy Summary</button>
+            </div>
+        </main>
+    </div>
+    <script src="insurance-companies.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

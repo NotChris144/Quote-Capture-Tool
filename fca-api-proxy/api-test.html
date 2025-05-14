@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCA API Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .results {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 400px;
+            overflow: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>FCA API Test Page</h1>
+    <p>Use this page to test if the FCA API proxy is working correctly. This will help determine if any issues are with the API or with the text prediction system.</p>
+    
+    <div class="container">
+        <div class="card">
+            <h2>API Connection Test</h2>
+            <p>Tests the basic connection to the API endpoint:</p>
+            <button id="testConnectionBtn">Test API Connection</button>
+            <div id="connectionStatus" class="status"></div>
+            <div id="connectionResults" class="results" style="display:none;"></div>
+        </div>
+        
+        <div class="card">
+            <h2>Search Test</h2>
+            <p>Test the search functionality with a company name:</p>
+            <input type="text" id="searchQuery" placeholder="Type insurance company name (e.g., Aviva, AXA, etc.)">
+            <button id="testSearchBtn">Test Search</button>
+            <div id="searchStatus" class="status"></div>
+            <div id="searchResults" class="results" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:3000';
+        
+        // Test API Connection
+        document.getElementById('testConnectionBtn').addEventListener('click', async () => {
+            const connectionStatus = document.getElementById('connectionStatus');
+            const connectionResults = document.getElementById('connectionResults');
+            
+            connectionStatus.className = 'status';
+            connectionStatus.textContent = 'Testing connection...';
+            connectionResults.style.display = 'none';
+            
+            try {
+                const startTime = performance.now();
+                const response = await fetch(`${API_BASE_URL}/api/insurance-companies`);
+                const endTime = performance.now();
+                const responseTime = (endTime - startTime).toFixed(2);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    connectionStatus.className = 'status success';
+                    connectionStatus.textContent = `✅ Connection Successful! Response time: ${responseTime}ms`;
+                    connectionResults.style.display = 'block';
+                    connectionResults.textContent = `Found ${data.length} companies\n\nFirst 10 companies:\n` + 
+                        JSON.stringify(data.slice(0, 10), null, 2);
+                } else {
+                    connectionStatus.className = 'status error';
+                    connectionStatus.textContent = `❌ Connection Failed with status: ${response.status}`;
+                    connectionResults.style.display = 'block';
+                    connectionResults.textContent = await response.text();
+                }
+            } catch (error) {
+                connectionStatus.className = 'status error';
+                connectionStatus.textContent = `❌ Connection Error: ${error.message}`;
+                connectionResults.style.display = 'block';
+                connectionResults.textContent = `Make sure the API server is running at ${API_BASE_URL}\n\nFull error: ${error.stack}`;
+            }
+        });
+        
+        // Test Search Functionality
+        document.getElementById('testSearchBtn').addEventListener('click', async () => {
+            const searchQuery = document.getElementById('searchQuery').value.trim();
+            const searchStatus = document.getElementById('searchStatus');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchQuery) {
+                searchStatus.className = 'status error';
+                searchStatus.textContent = 'Please enter a search query';
+                searchResults.style.display = 'none';
+                return;
+            }
+            
+            searchStatus.className = 'status';
+            searchStatus.textContent = `Searching for "${searchQuery}"...`;
+            searchResults.style.display = 'none';
+            
+            try {
+                const startTime = performance.now();
+                const response = await fetch(`${API_BASE_URL}/api/insurance-companies/search?q=${encodeURIComponent(searchQuery)}`);
+                const endTime = performance.now();
+                const responseTime = (endTime - startTime).toFixed(2);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    searchStatus.className = 'status success';
+                    searchStatus.textContent = `✅ Search Successful! Found ${data.length} results in ${responseTime}ms`;
+                    searchResults.style.display = 'block';
+                    
+                    if (data.length === 0) {
+                        searchResults.textContent = 'No matches found for your query.';
+                    } else {
+                        searchResults.textContent = `Search results for "${searchQuery}":\n` + 
+                            JSON.stringify(data, null, 2);
+                    }
+                } else {
+                    searchStatus.className = 'status error';
+                    searchStatus.textContent = `❌ Search Failed with status: ${response.status}`;
+                    searchResults.style.display = 'block';
+                    searchResults.textContent = await response.text();
+                }
+            } catch (error) {
+                searchStatus.className = 'status error';
+                searchStatus.textContent = `❌ Search Error: ${error.message}`;
+                searchResults.style.display = 'block';
+                searchResults.textContent = `Make sure the API server is running at ${API_BASE_URL}\n\nFull error: ${error.stack}`;
+            }
+        });
+        
+        // Enable pressing Enter in the search box
+        document.getElementById('searchQuery').addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                document.getElementById('testSearchBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

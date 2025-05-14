@@ -1,0 +1,736 @@
+:root {
+    --background-color: #121212;
+    --card-background: rgba(40, 40, 40, 0.6); /* Semi-transparent dark grey */
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-color: #e0e0e0;
+    --primary-accent: #00aaff; /* A bright blue for accents */
+    --secondary-accent: #7f5af0; /* Secondary purple accent for visual interest */
+    --accent-glow: rgba(0, 170, 255, 0.15);
+    --input-background: rgba(50, 50, 50, 0.7);
+    --input-border: rgba(255, 255, 255, 0.2);
+    --input-focus-glow: rgba(0, 170, 255, 0.5);
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 8px 32px rgba(0, 170, 255, 0.12);
+    --glass-effect-strong: blur(8px);
+    --glass-effect-light: blur(4px);
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --font-family: 'Inter', 'Poppins', sans-serif;
+    --animation-subtle: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --animation-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background-image: linear-gradient(45deg, rgba(20,20,20,0.95) 0%, rgba(30,30,30,0.95) 100%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); /* Subtle pattern */
+}
+
+.app-container {
+    width: 100%;
+    max-width: 700px; /* Max width for the form */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+header h1 {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: var(--primary-accent);
+    text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+}
+
+.card {
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    border-radius: 18px; /* Slightly more rounded corners */
+    padding: 28px; /* More generous padding */
+    margin-bottom: 28px;
+    box-shadow: 0 8px 32px 0 var(--shadow-color), var(--shadow-glow);
+    backdrop-filter: var(--glass-effect-strong);
+    -webkit-backdrop-filter: var(--glass-effect-strong); /* For Safari */
+    animation: slideInUp 0.6s ease-out forwards;
+    opacity: 0; /* Start hidden for animation */
+    transition: transform var(--animation-medium), box-shadow var(--animation-medium);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px 0 var(--shadow-color), 0 0 20px var(--accent-glow);
+}
+
+/* Stagger card animations */
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    font-weight: 500;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative; /* For floating labels if we add them */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    background-color: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    color: var(--text-color);
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: all var(--animation-medium);
+    transform-origin: center left;
+}
+
+.form-group input[type="text"]::placeholder,
+.form-group input[type="number"]::placeholder {
+    color: rgba(224, 224, 224, 0.4);
+    transition: opacity var(--animation-subtle);
+}
+
+.form-group input[type="text"]:hover,
+.form-group input[type="number"]:hover,
+.form-group select:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(60, 60, 60, 0.7);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    box-shadow: 0 0 0 3px var(--input-focus-glow), 0 0 15px var(--accent-glow);
+    background-color: rgba(70, 70, 70, 0.7);
+    transform: scale(1.01);
+}
+
+.form-group input[type="text"]:focus::placeholder,
+.form-group input[type="number"]:focus::placeholder {
+    opacity: 0.7;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px; /* Custom checkbox size */
+    height: 18px; /* Custom checkbox size */
+    accent-color: var(--primary-accent); /* Style the check color */
+}
+
+.conditional-input-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, padding-top 0.4s ease-out, margin-top 0.4s ease-out;
+    padding-top: 0;
+    margin-top: 0;
+    border-left: 2px solid var(--primary-accent);
+    padding-left: 15px;
+    margin-left: 5px; /* Align with checkbox text */
+}
+
+.conditional-input-container.price-input-container { /* Specific for price inputs in addons */
+    border-left-width: 0;
+    padding-left: 0;
+    margin-left: 0;
+    margin-top: 8px; /* Space between addon name and its price input */
+}
+
+
+.conditional-input-container.expanded {
+    max-height: 200px; /* Adjust as needed */
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.conditional-input-container.collapsed {
+    max-height: 0 !important;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    overflow: hidden !important;
+    border-left-width: 0 !important;
+}
+
+
+.conditional-input-container label {
+    font-size: 0.9em;
+    color: rgba(224, 224, 224, 0.8);
+}
+
+.conditional-input-container input[type="text"],
+.conditional-input-container input[type="number"] {
+    margin-top: 5px;
+    font-size: 0.95em;
+    padding: 8px 10px;
+    width: calc(100% - 20px); 
+}
+
+.section-divider {
+    border: 0;
+    height: 1px;
+    background: var(--card-border);
+    margin: 25px 0; /* Reduced margin */
+}
+
+.payment-divider { /* Specific divider for payment section */
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 20px 0px 20px;
+}
+
+.payment-group-title {
+    font-size: 0.9em;
+    color: rgba(224, 224, 224, 0.7);
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+
+#optional-info-card h3 { 
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 1.3em; 
+    color: var(--text-color);
+}
+
+/* Styles for new Addon Search System */
+.addon-input-area {
+    position: relative; /* For positioning suggestions */
+    margin-bottom: 15px;
+}
+
+#addon-search-input {
+    width: 100%;
+    transition: border-color 0.25s ease;
+}
+
+.suggestions-list {
+    position: absolute;
+    top: 100%; /* Position below the input */
+    left: 0;
+    right: 0;
+    background: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-top: none; /* Avoid double border with input */
+    border-radius: 0 0 8px 8px;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.suggestions-list div {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--card-border); /* Separator for items */
+}
+.suggestions-list div:last-child {
+    border-bottom: none;
+}
+
+.suggestions-list div:hover,
+.suggestions-list div.selected { /* Style for hovered or keyboard-selected item */
+    background-color: var(--primary-accent);
+    color: #fff;
+}
+
+/* Insurance company autocomplete styles */
+.insurance-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--input-background);
+    border: 1px solid var(--input-border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.insurance-suggestions div {
+    padding: 10px 15px;
+    cursor: pointer;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--card-border);
+    transition: background-color var(--animation-subtle);
+}
+
+.insurance-suggestions div:last-child {
+    border-bottom: none;
+    border-radius: 0 0 10px 10px;
+}
+
+.insurance-suggestions div:hover,
+.insurance-suggestions div.focused {
+    background-color: var(--primary-accent);
+    color: #fff;
+}
+
+.insurance-suggestions div strong {
+    font-weight: 600;
+}
+
+.insurance-suggestions::-webkit-scrollbar {
+    width: 6px;
+}
+
+.insurance-suggestions::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+
+.insurance-suggestions::-webkit-scrollbar-thumb {
+    background: var(--primary-accent);
+    border-radius: 10px;
+}
+
+.selected-addons-bubbles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Slightly increased gap */
+    margin-top: 15px;
+    padding: 10px 0; 
+}
+
+.addon-bubble {
+    background-color: rgba(0, 170, 255, 0.8); /* Less transparent for better readability */
+    background-image: linear-gradient(135deg, rgba(0, 170, 255, 0.8), rgba(0, 140, 255, 0.9));
+    color: #fff;
+    padding: 10px 14px; /* More padding for better touch targets */
+    border-radius: 20px; 
+    font-size: 0.9em;
+    display: flex; /* Changed to flex for better internal alignment */
+    align-items: center; /* Vertically align items in bubble */
+    justify-content: space-between; /* Space out content and remove button */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.1);
+    position: relative; /* For positioning sub-options panel */
+    transition: all var(--animation-medium);
+    transform-origin: center;
+    cursor: pointer;
+}
+
+.addon-bubble:hover {
+    background-image: linear-gradient(135deg, rgba(0, 180, 255, 0.85), rgba(0, 150, 255, 0.95));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.15), 0 0 15px var(--accent-glow);
+}
+
+
+.addon-bubble-content {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between name and sub-options trigger */
+}
+.addon-bubble-name {
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+
+.sub-options-trigger {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.8em;
+    line-height: 18px; /* Adjust for vertical centering of arrow */
+    text-align: center;
+    cursor: pointer;
+    margin-left: 5px; /* Space from the main text */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    padding: 0;
+}
+.sub-options-trigger:hover {
+    background: rgba(255,255,255,0.3);
+}
+.sub-options-trigger.active { /* When panel is open */
+    transform: rotate(180deg);
+}
+
+
+.addon-sub-options-panel {
+    position: absolute; /* Back to absolute positioning */
+    top: calc(100% + 5px); /* Below the bubble */
+    left: 0;
+    min-width: 240px; /* Wider for better readability */
+    background: var(--card-background); /* Match card background */
+    border: 1px solid var(--primary-accent); /* Highlight with accent color */
+    border-radius: 10px; /* Slightly more rounded */
+    padding: 12px;
+    z-index: 100; /* Higher z-index to ensure it appears above everything */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4), 0 0 10px rgba(0, 170, 255, 0.1); /* Enhanced shadow with a hint of accent glow */
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Only animate appearance, not position */
+    pointer-events: none; /* Initially not interactive */
+    max-height: 250px; /* Limit height */
+    overflow-y: auto; /* Allow scrolling within panel if many options */
+}
+
+.addon-sub-options-panel.expanded {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.addon-sub-options-panel.collapsed {
+    display: none; /* Hide when collapsed */
+}
+
+/* Scrollbar styling for the dropdown */
+.addon-sub-options-panel::-webkit-scrollbar {
+    width: 6px;
+}
+.addon-sub-options-panel::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+.addon-sub-options-panel::-webkit-scrollbar-thumb {
+    background: var(--primary-accent);
+    border-radius: 10px;
+}
+
+
+.sub-option-label {
+    display: block; /* Each on new line */
+    padding: 8px 12px; /* More padding for better clickability */
+    font-size: 0.95em;
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 6px; /* More rounded for modern look */
+    transition: all 0.15s ease;
+    margin-bottom: 4px;
+}
+
+.sub-option-label:last-child {
+    margin-bottom: 0;
+}
+
+/* Style for the chips that display selected sub-options in the bubble */
+.selected-sub-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+    max-width: 100%;
+    min-height: 24px; /* Add fixed height to prevent layout shifts */
+    align-items: center;
+}
+
+.sub-option-chip {
+    font-size: 0.75em;
+    background-color: rgba(255, 255, 255, 0.25); /* Lighter background for better contrast */
+    color: #ffffff; /* White text for better readability */
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Lighter border */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Text shadow for readability */
+    font-weight: 500; /* Slightly bolder text */
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sub-option-label input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: var(--primary-accent);
+    vertical-align: middle; /* Align checkbox better with text */
+}
+.sub-option-label:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+
+.addon-bubble .remove-addon {
+    background: none;
+    border: none;
+    margin-left: auto; /* Push remove button to the far right of the bubble */
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 0 0 8px; /* Adjusted padding */
+    line-height: 1;
+}
+.addon-bubble .remove-addon:hover {
+    color: #ffe0e0; /* Light red on hover */
+}
+
+
+/* Footer for action buttons */
+.form-actions-footer {
+    background: var(--card-background); /* Similar to cards but could be distinct */
+    border: 1px solid var(--card-border);
+    border-radius: 15px;
+    padding: 20px 25px;
+    margin-top: 10px; /* Space from last card */
+    margin-bottom: 20px; /* Space at the bottom of the page */
+    box-shadow: 0 8px 32px 0 var(--shadow-color);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center; /* Center buttons in the footer */
+    position: sticky; /* Make it sticky */
+    bottom: 0; /* Stick to the bottom */
+    z-index: 50; /* Ensure it's above other content but below modals/popups */
+    /* To prevent content from being hidden behind it when scrolling to bottom */
+    /* Add padding to the body or a spacer div if needed, or adjust main's padding-bottom */
+}
+/* Ensure last card doesn't get hidden by sticky footer */
+main {
+    padding-bottom: 100px; /* Adjust this value based on footer height */
+}
+
+
+.total-payment-display {
+    margin-top: 10px;
+    padding: 10px 12px; 
+    background-color: rgba(0,0,0,0.25); 
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1em;
+}
+
+.total-payment-display label {
+    margin-bottom: 0;
+    font-weight: 500;
+}
+
+#dd-annual-total-value,
+#final-total-payment-value { 
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--primary-accent);
+}
+
+.total-payment-display.final-total { 
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(0, 170, 255, 0.1); 
+    border: 1px solid var(--primary-accent);
+}
+.total-payment-display.final-total label {
+    font-weight: 700;
+    font-size: 1.1em;
+}
+.total-payment-display.final-total span {
+    font-size: 1.4em;
+    font-weight: 700;
+}
+
+
+/* No longer need to collapse these groups with CSS, JS will handle if needed, but requirement is to show all */
+/*
+#annual-cash-price-group.collapsed,
+#dd-fields-group.collapsed {
+    display: none;
+}
+*/
+
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+    gap: 15px; /* Space between buttons */
+    justify-content: center; /* Center buttons */
+    margin-top: 10px;
+}
+
+.action-btn {
+    padding: 14px 22px;
+    font-size: 1em;
+    font-weight: 500;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all var(--animation-medium);
+    background-color: var(--input-background);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+    min-width: 120px; /* Minimum width for buttons */
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: all 0.6s;
+    z-index: 1;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.action-btn:hover::before {
+    left: 100%;
+}
+
+.action-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.action-btn.primary-btn {
+    background: linear-gradient(135deg, var(--primary-accent), #0099e6);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(0,170,255,0.3), 0 0 0 1px rgba(0,170,255,0.5);
+}
+
+.action-btn.primary-btn:hover {
+    background: linear-gradient(135deg, #0099e6, #0080d6);
+    box-shadow: 0 8px 25px rgba(0,170,255,0.4), 0 0 0 1px rgba(0,170,255,0.6), 0 0 20px var(--accent-glow);
+}
+
+.action-btn.danger-btn {
+    background: linear-gradient(135deg, var(--danger-color), #c82333);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(220,53,69,0.3), 0 0 0 1px rgba(220,53,69,0.5);
+}
+
+.action-btn.danger-btn:hover {
+    background: linear-gradient(135deg, #c82333, #b21f2d);
+    box-shadow: 0 8px 25px rgba(220,53,69,0.4), 0 0 0 1px rgba(220,53,69,0.6);
+}
+
+#save-button .btn-icon {
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+/* Insurance Company Autocomplete */
+.insurance-suggestions {
+    position: absolute;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    background-color: var(--input-background);
+    border: 1px solid var(--primary-accent);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--input-focus-glow);
+    z-index: 1000;
+    margin-top: 2px;
+    color: var(--text-color);
+}
+
+.insurance-suggestions div {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.insurance-suggestions div:hover,
+.insurance-suggestions div.focused {
+    background-color: rgba(0, 170, 255, 0.2);
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    .app-container {
+        padding: 10px;
+    }
+    header h1 {
+        font-size: 1.8em;
+    }
+    .card {
+        padding: 20px;
+    }
+    .card h2 {
+        font-size: 1.4em;
+    }
+    .action-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+    .action-btn {
+        width: 100%; /* Full width buttons on small screens */
+    }
+}
