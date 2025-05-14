@@ -8,10 +8,10 @@ const CONFIG = {
     // API key for FCA Financial Services Register
     API_KEY: '6af0a792ac59ac2c423a943781af0729',
     // Base URL for our proxy server
-    API_BASE_URL: 'http://localhost:3000',
+    API_BASE_URL: 'https://quote-capture-tool-proxy.onrender.com',
     // API endpoints - matching server.js configuration
-    API_ENDPOINT: 'http://localhost:3000/api/insurance-companies',
-    API_SEARCH_ENDPOINT: 'http://localhost:3000/api/insurance-companies/search',
+    API_ENDPOINT: 'https://quote-capture-tool-proxy.onrender.com/api/insurance-companies',
+    API_SEARCH_ENDPOINT: 'https://quote-capture-tool-proxy.onrender.com/api/insurance-companies/search',
     // Cache settings
     CACHE_KEY: 'insurance_companies_cache',
     CACHE_DURATION: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds

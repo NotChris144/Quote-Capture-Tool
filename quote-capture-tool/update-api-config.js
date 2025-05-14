@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 // ============= EDIT THIS VALUE =============
-const RENDER_API_URL = 'https://YOUR_RENDER_API_URL.onrender.com';
+const RENDER_API_URL = 'https://quote-capture-tool-proxy.onrender.com';
 // ==========================================
 
 const insuranceCompaniesJsPath = path.join(__dirname, 'insurance-companies.js');
