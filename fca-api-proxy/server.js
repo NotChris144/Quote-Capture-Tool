@@ -215,11 +215,20 @@ app.get('/api/insurance-companies/search', async (req, res) => {
     let results = [];
     
     if (response.data && response.data.Data && Array.isArray(response.data.Data)) {
-      results = response.data.Data.map(item => ({
-        name: item.Name,
-        reference: item["Reference Number"] || '',
-        status: item.Status || 'Unknown'
-      }));
+      results = response.data.Data.map(item => {
+        // Clean up the name by removing any postcode info
+        let name = item.Name;
+        
+        // Remove postcodes and other extra info in parentheses
+        name = name.replace(/\s*\(Postcode:.*?\)\s*/g, '');
+        name = name.replace(/\s*\([^)]*\)\s*$/g, '').trim();
+        
+        return {
+          name: name,
+          reference: item["Reference Number"] || '',
+          status: item.Status || 'Unknown'
+        };
+      });
       console.log(`Found ${results.length} companies matching "${query}"`);
       
       // Add any new results to our cache for future use
