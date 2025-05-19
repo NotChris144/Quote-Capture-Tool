@@ -83,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "Towing Insurance", priceEditable: true },
         { name: "Tyre Protection Cover", priceEditable: true },
         { name: "Uninsured Driver Protection", priceEditable: true },
-        { name: "Windscreen Cover", priceEditable: true }
+        { name: "Windscreen Cover", priceEditable: true },
+        { name: "Test", priceEditable: true}
     ].sort((a, b) => a.name.localeCompare(b.name));
 
     let currentlySelectedAddons = [];
